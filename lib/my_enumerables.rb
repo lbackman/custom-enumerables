@@ -8,5 +8,14 @@ end
 # to this method
 class Array
   # Define my_each here
-  
+  def my_each
+    return self.to_enum(__method__) { size if size } unless block_given?
+    
+    i = 0
+    while i < self.size
+      yield(self[i])
+      i += 1
+    end
+    self
+  end
 end
