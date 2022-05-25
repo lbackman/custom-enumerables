@@ -47,6 +47,42 @@ module Enumerable
 
     false
   end
+
+  def my_any?
+    unless block_given?
+      return false if self.size == 0
+
+      true_count = 0
+      self.my_each { |el| true_count += 1 if el }
+      return true if true_count > 0
+
+      return false
+    end
+    true_count = 0
+    self.my_each { |el| true_count += 1 if yield(el) }
+    return true if true_count > 0
+
+    false
+  end
+
+  def my_none?
+    unless block_given?
+      return true if self.size == 0
+
+      true_arr = []
+      self.my_each do |el|
+        true_arr << el if el
+        return false if true_arr.size > 0
+      end
+      return true
+    end
+    true_arr = []
+    self.my_each do |el|
+      true_arr << yield(el) if yield(el)
+      return false if true_arr.size > 0
+    end
+    true
+  end
 end
 
 class Array
