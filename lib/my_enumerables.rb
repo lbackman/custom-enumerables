@@ -93,6 +93,14 @@ module Enumerable
     self.my_each { |el| counted += 1 if yield(el) }
     counted
   end
+
+  def my_map
+    return self.to_enum(__method__) { size if size } unless block_given?
+
+    mapped = []
+    self.my_each { |el| mapped << yield(el) }
+    mapped
+  end
 end
 
 class Array
