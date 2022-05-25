@@ -85,6 +85,14 @@ module Enumerable
     end
     true
   end
+
+  def my_count
+    return self.size unless block_given?
+
+    counted = 0
+    self.my_each { |el| counted += 1 if yield(el) }
+    counted
+  end
 end
 
 class Array
