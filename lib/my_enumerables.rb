@@ -65,6 +65,8 @@ module Enumerable
     false
   end
 
+  # For my_none? I tried making it so that immedately when
+  # there is a truthy value, the method will return false.
   def my_none?
     unless block_given?
       return true if self.size == 0
