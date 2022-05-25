@@ -3,7 +3,7 @@
 This project is about recreating some commonly used enumerable methods:
 
 - Array#each
-- Enumerable#my_each_with_index
+- Enumerable#each_with_index
 - Enumerable#select
 - Enumerable#all?
 - Enumerable#any?
