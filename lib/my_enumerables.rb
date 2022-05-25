@@ -30,6 +30,16 @@ module Enumerable
     self.my_each { |el| selected << el if yield(el) }
     selected
   end
+
+  def my_all?
+    return true unless block_given?
+
+    true_arr = []
+    self.my_each { |el| true_arr << yield(el) if yield(el) }
+    return true if true_arr.size == self.size
+
+    false
+  end
 end
 
 class Array
