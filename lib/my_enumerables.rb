@@ -101,6 +101,29 @@ module Enumerable
     self.my_each { |el| mapped << yield(el) }
     mapped
   end
+
+  def my_inject(*args)
+    unless block_given?
+      case args.size
+      when 1
+        sym = args.first
+        accumulator = self.shift
+      when 2
+        accumulator = args.first
+        sym = args.last
+      end
+      self.my_each { |el| accumulator = accumulator.send(sym, el) }
+      return accumulator
+    end
+    case args.size
+    when 0
+      accumulator = self.shift
+    when 1
+      accumulator = args.first
+    end
+    self.my_each { |el| accumulator = yield(accumulator, el) }
+    accumulator
+  end
 end
 
 class Array
