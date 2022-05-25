@@ -116,10 +116,8 @@ module Enumerable
       return accumulator
     end
     case args.size
-    when 0
-      accumulator = self.shift
-    when 1
-      accumulator = args.first
+    when 0 then accumulator = self.shift
+    when 1 then accumulator = args.first
     end
     self.my_each { |el| accumulator = yield(accumulator, el) }
     accumulator
