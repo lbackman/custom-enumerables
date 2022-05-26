@@ -33,7 +33,7 @@ module Enumerable
 
       return true
     end
-    my_each do |el| 
+    my_each do |el|
       false_count += 1 unless yield(el)
       return false if false_count.positive?
     end
@@ -97,24 +97,33 @@ module Enumerable
     mapped
   end
 
-  def my_inject(*args)
-    unless block_given?
-      case args.size
-      when 1
-        sym = args.first
-        accumulator = shift
-      when 2
-        accumulator = args.first
-        sym = args.last
-      end
-      my_each { |el| accumulator = accumulator.send(sym, el) }
-      return accumulator
-    end
+  def my_inject(*args, &block)
+    return my_inject_no_block(self, *args) unless block_given?
+  
+    my_inject_block(self, *args, &block)
+  end
+
+  private
+
+  def my_inject_no_block(obj, *args)
     case args.size
-    when 0 then accumulator = shift
+    when 1
+      sym = args.first
+      accumulator = obj.shift
+    when 2
+      accumulator = args.first
+      sym = args.last
+    end
+    obj.my_each { |el| accumulator = accumulator.send(sym, el) }
+    accumulator
+  end
+
+  def my_inject_block(obj, *args, &block)
+    case args.size
+    when 0 then accumulator = obj.shift
     when 1 then accumulator = args.first
     end
-    my_each { |el| accumulator = yield(accumulator, el) }
+    obj.my_each { |el| accumulator = block.call(accumulator, el) }
     accumulator
   end
 end
