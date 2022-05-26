@@ -3,6 +3,7 @@
 # Recreating enumerables
 module Enumerable
   def my_each_with_index
+    # The size block ensures that calling Enumerator#size works as expected.
     return to_enum(__method__) { size } unless block_given?
 
     idx = 0
