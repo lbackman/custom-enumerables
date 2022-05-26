@@ -33,19 +33,23 @@ module Enumerable
 
   def my_all?
     unless block_given?
-      return true if size == 0
+      return true if size.zero?
 
-      true_arr = []
-      my_each { |el| true_arr << el if el }
-      return true if true_arr.size == size
+      false_count = 0
+      my_each do |el|
+        false_count += 1 unless el
+        return false if false_count.positive?
+      end
 
-      return false
+      return true
     end
-    true_arr = []
-    my_each { |el| true_arr << yield(el) if yield(el) }
-    return true if true_arr.size == size
+    false_count = 0
+    my_each do |el| 
+      false_count += 1 unless yield(el)
+      return false if false_count.positive?
+    end
 
-    false
+    true
   end
 
   def my_any?
