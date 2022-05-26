@@ -32,10 +32,10 @@ module Enumerable
   end
 
   def my_all?
+    false_count = 0
     unless block_given?
       return true if size.zero?
 
-      false_count = 0
       my_each do |el|
         false_count += 1 unless el
         return false if false_count.positive?
@@ -43,7 +43,6 @@ module Enumerable
 
       return true
     end
-    false_count = 0
     my_each do |el| 
       false_count += 1 unless yield(el)
       return false if false_count.positive?
@@ -53,10 +52,10 @@ module Enumerable
   end
 
   def my_any?
+    true_count = 0
     unless block_given?
-      return false if size == 0
+      return false if size.zero?
 
-      true_count = 0
       my_each do |el|
         true_count += 1 if el
         return true if true_count.positive?
@@ -64,7 +63,6 @@ module Enumerable
 
       return false
     end
-    true_count = 0
     my_each do |el|
       true_count += 1 if yield(el)
       return true if true_count.positive?
@@ -73,24 +71,23 @@ module Enumerable
     false
   end
 
-  # For my_none? I tried making it so that immedately when
-  # there is a truthy value, the method will return false.
   def my_none?
+    true_count = 0
     unless block_given?
-      return true if size == 0
+      return true if size.zero?
 
-      true_arr = []
       my_each do |el|
-        true_arr << el if el
-        return false if true_arr.size > 0
+        true_count += 1 if el
+        return false if true_count.positive?
       end
+
       return true
     end
-    true_arr = []
     my_each do |el|
-      true_arr << yield(el) if yield(el)
-      return false if true_arr.size > 0
+      true_count += 1 if yield(el)
+      return false if true_count.positive?
     end
+
     true
   end
 
