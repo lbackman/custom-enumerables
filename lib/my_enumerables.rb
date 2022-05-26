@@ -57,14 +57,18 @@ module Enumerable
       return false if size == 0
 
       true_count = 0
-      my_each { |el| true_count += 1 if el }
-      return true if true_count > 0
+      my_each do |el|
+        true_count += 1 if el
+        return true if true_count.positive?
+      end
 
       return false
     end
     true_count = 0
-    my_each { |el| true_count += 1 if yield(el) }
-    return true if true_count > 0
+    my_each do |el|
+      true_count += 1 if yield(el)
+      return true if true_count.positive?
+    end
 
     false
   end
