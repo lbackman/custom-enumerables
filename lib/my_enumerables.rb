@@ -3,7 +3,7 @@
 # Recreating enumerables
 module Enumerable
   def my_each_with_index
-    return to_enum(__method__) { size if size } unless block_given?
+    return to_enum(__method__) { size } unless block_given?
 
     idx = 0
     my_each do |el|
@@ -14,7 +14,7 @@ module Enumerable
   end
 
   def my_select
-    return to_enum(__method__) { size if size } unless block_given?
+    return to_enum(__method__) { size } unless block_given?
 
     selected = []
     my_each { |el| selected << el if yield(el) }
@@ -90,7 +90,7 @@ module Enumerable
   end
 
   def my_map
-    return to_enum(__method__) { size if size } unless block_given?
+    return to_enum(__method__) { size } unless block_given?
 
     mapped = []
     my_each { |el| mapped << yield(el) }
@@ -99,7 +99,7 @@ module Enumerable
 
   def my_inject(*args, &block)
     return my_inject_no_block(self, *args) unless block_given?
-  
+
     my_inject_block(self, *args, &block)
   end
 
@@ -131,7 +131,7 @@ end
 # Need my_each for use in module Enumerables
 class Array
   def my_each
-    return to_enum(__method__) { size if size } unless block_given?
+    return to_enum(__method__) { size } unless block_given?
 
     i = 0
     while i < size
