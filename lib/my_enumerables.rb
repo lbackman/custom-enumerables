@@ -23,41 +23,23 @@ module Enumerable
   end
 
   def my_all?
-    false_count = 0
     unless block_given?
-      return true if size.zero?
-
-      my_each do |el|
-        false_count += 1 unless el
-        return false if false_count.positive?
-      end
+      my_each { |el| return false unless el }
 
       return true
     end
-    my_each do |el|
-      false_count += 1 unless yield(el)
-      return false if false_count.positive?
-    end
+    my_each { |el| return false unless yield(el) }
 
     true
   end
 
   def my_any?
-    true_count = 0
     unless block_given?
-      return false if size.zero?
-
-      my_each do |el|
-        true_count += 1 if el
-        return true if true_count.positive?
-      end
+      my_each { |el| return true if el }
 
       return false
     end
-    my_each do |el|
-      true_count += 1 if yield(el)
-      return true if true_count.positive?
-    end
+    my_each { |el| return true if yield(el) }
 
     false
   end
