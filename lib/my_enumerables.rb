@@ -1,16 +1,6 @@
 # frozen_string_literal: true
 
-# The follwing methods will be recreated:
-# - Array#each
-# - Enumerable#each_with_index
-# - Enumerable#select
-# - Enumerable#all?
-# - Enumerable#any?
-# - Enumerable#none?
-# - Enumerable#count
-# - Enumerable#map
-# - Enumerable#inject
-
+# Recreating enumerables
 module Enumerable
   def my_each_with_index
     return to_enum(__method__) { size if size } unless block_given?
@@ -129,6 +119,7 @@ module Enumerable
   end
 end
 
+# Need my_each for use in module Enumerables
 class Array
   def my_each
     return to_enum(__method__) { size if size } unless block_given?
