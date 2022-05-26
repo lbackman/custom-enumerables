@@ -119,12 +119,12 @@ module Enumerable
     accumulator
   end
 
-  def my_inject_block(obj, *args, &block)
+  def my_inject_block(obj, *args)
     case args.size
     when 0 then accumulator = obj.shift
     when 1 then accumulator = args.first
     end
-    obj.my_each { |el| accumulator = block.call(accumulator, el) }
+    obj.my_each { |el| accumulator = yield(accumulator, el) }
     accumulator
   end
 end
