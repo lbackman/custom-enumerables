@@ -62,24 +62,9 @@ module Enumerable
     false
   end
 
-  def my_none?
-    true_count = 0
-    unless block_given?
-      return true if size.zero?
-
-      my_each do |el|
-        true_count += 1 if el
-        return false if true_count.positive?
-      end
-
-      return true
-    end
-    my_each do |el|
-      true_count += 1 if yield(el)
-      return false if true_count.positive?
-    end
-
-    true
+  # The opposite of at least 1 (or any) is none.
+  def my_none?(&block)
+    !my_any?(&block)
   end
 
   def my_count
