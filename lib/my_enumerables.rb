@@ -15,10 +15,10 @@ module Enumerable
   def my_each_with_index
     return self.to_enum(__method__) { size if size } unless block_given?
 
-    i = 0
-    while i < self.size
-      yield(self[i], i)
-      i += 1
+    idx = 0
+    my_each do |el|
+      yield(el, idx)
+      idx += 1
     end
     self
   end
