@@ -22,31 +22,37 @@ module Enumerable
     selected
   end
 
-  def my_all?
-    unless block_given?
+  def my_all?(pattern = omitted = true)
+    if omitted && !block_given?
       my_each { |el| return false unless el }
-
-      return true
+    elsif !omitted
+      my_each { |el| return false unless pattern === el }
+    else
+      my_each { |el| return false unless yield(el) }
     end
-    my_each { |el| return false unless yield(el) }
-
     true
   end
 
-  def my_any?
-    unless block_given?
+  def my_any?(pattern = omitted = true)
+    if omitted && !block_given?
       my_each { |el| return true if el }
-
-      return false
+    elsif !omitted
+      my_each { |el| return true if pattern === el }
+    else
+      my_each { |el| return true if yield(el) }
     end
-    my_each { |el| return true if yield(el) }
-
     false
   end
 
-  # The opposite of at least 1 (or any) is none.
-  def my_none?(&block)
-    !my_any?(&block)
+  def my_none?(pattern = omitted = true)
+    if omitted && !block_given?
+      my_each { |el| return false if el }
+    elsif !omitted
+      my_each { |el| return false if pattern === el }
+    else
+      my_each { |el| return false if yield(el) }
+    end
+    true
   end
 
   def my_count(item = omitted = true)
