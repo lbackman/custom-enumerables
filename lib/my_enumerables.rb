@@ -49,11 +49,17 @@ module Enumerable
     !my_any?(&block)
   end
 
-  def my_count
-    return size unless block_given?
+  def my_count(item = omitted = true)
+    return size if omitted && !block_given?
 
     counted = 0
-    my_each { |el| counted += 1 if yield(el) }
+    if !omitted
+      warn('warning: block not used') if block_given?
+
+      my_each { |el| counted += 1 if item === el }
+    elsif block_given?
+      my_each { |el| counted += 1 if yield(el) }
+    end
     counted
   end
 
